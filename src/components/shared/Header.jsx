@@ -1,5 +1,5 @@
 'use client'
-import React, { Fragment } from 'react'
+import React, { Fragment, memo } from 'react'
 import Link from 'next/link'
 import { AUTH_ROUTES, ROUTES } from '@/constants/routes'
 import Container from 'react-bootstrap/Container'
@@ -29,7 +29,7 @@ const staffPath = [
   { name: 'Staff', path: ROUTES.STAFF },
 ]
 
-export default function Header({ profile }) {
+function Header({ profile }) {
   const { signOut } = useToSignOut()
 
   if (profile?.role === SYSTEM_ROLES.OWNER) {
@@ -86,3 +86,5 @@ export default function Header({ profile }) {
     </Navbar>
   )
 }
+
+export default memo(Header)

@@ -11,28 +11,18 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
   const ComponentWithProtection = (props) => {
     const router = useRouter()
     const profile = useSelector((e) => e.profile?.data) || {}
+    const { role } = profile
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-      protectionCheck()
+      protectedRoutesCheck()
     }, [])
 
-    const rolesHomepage = () => {
-      let page = '/'
-      if (SYSTEM_ROLES.OWNER === profile.role) page = ROUTES.OFFICES
-      if (SYSTEM_ROLES.STAFF === profile.role) page = ROUTES.STAFF
-      return page
-    }
-
-    const protectionCheck = () => {
-      if (!profile?.role && allowedRoles?.length) {
-        return router.replace(ROUTES.HOME)
+    const protectedRoutesCheck = () => {
+      if (role && (!allowedRoles?.length || !allowedRoles.includes(role))) {
+        return router.replace(rolesHomepage(role))
       }
-
-      if (profile?.role && !allowedRoles.includes(profile?.role)) {
-        return router.replace(rolesHomepage())
-      }
-
+      if (!role && allowedRoles?.length) return router.replace(ROUTES.HOME)
       setLoading(false)
     }
 
@@ -41,4 +31,10 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
   }
 
   return ComponentWithProtection
+}
+
+const rolesHomepage = (role) => {
+  if (SYSTEM_ROLES.OWNER === role) return ROUTES.OFFICES
+  if (SYSTEM_ROLES.STAFF === role) return ROUTES.STAFF
+  return ROUTES.HOME
 }

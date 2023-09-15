@@ -2,15 +2,18 @@
 
 import Header from '@/components/shared/Header'
 import { Toaster } from 'react-hot-toast'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import Loader from '../components/shared/Loader'
 import useAuth from '@/hooks/useAuth'
 import usePreviousRoute from '@/hooks/usePreviousRoute'
 import Subcsription from '@/app/(owner)/subscription/page'
+import { usePathname } from 'next/navigation'
 
 const MainLayout = ({ children }) => {
+  const pathName = usePathname()
+
   return (
     <Provider store={store}>
       <App>{children}</App>

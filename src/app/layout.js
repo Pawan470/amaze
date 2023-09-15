@@ -1,5 +1,3 @@
-'use client'
-
 import './globals.scss'
 import { Inter } from 'next/font/google'
 import MainLayout from '@/layout/MainLayout'
