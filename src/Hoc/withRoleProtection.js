@@ -1,14 +1,14 @@
 'use client'
+
 import { SYSTEM_ROLES } from '@/constants'
-import { AUTH_ROUTES, ROUTES } from '@/constants/routes'
+import { ROUTES } from '@/constants/routes'
 import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
 import { useSelector } from 'react-redux'
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import Loader from '@/components/shared/Loader'
 
 export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
   const ComponentWithProtection = (props) => {
-    const currentPath = usePathname()
     const router = useRouter()
     const profile = useSelector((e) => e.profile?.data) || {}
     const [loading, setLoading] = useState(true)
@@ -25,6 +25,10 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
     }
 
     const protectionCheck = () => {
+      if (!profile?.role && allowedRoles?.length) {
+        return router.replace(ROUTES.HOME)
+      }
+
       if (profile?.role && !allowedRoles.includes(profile?.role)) {
         return router.replace(rolesHomepage())
       }
@@ -32,19 +36,9 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
       setLoading(false)
     }
 
-    if (loading) return null
+    if (loading) return <Loader />
     return <WrappedComponent {...props} router={router} />
   }
 
   return ComponentWithProtection
 }
-
-// if (profile?.role && currentPath === AUTH_ROUTES.LOGIN) {
-//   if (SYSTEM_ROLES.OWNER === profile.role) {
-//     return router.replace(ROUTES.OFFICES)
-//   }
-
-//   if (SYSTEM_ROLES.STAFF === profile.role) {
-//     return router.replace(ROUTES.STAFF)
-//   }
-// }

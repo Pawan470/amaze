@@ -9,4 +9,3 @@ function Staff() {
 }
 
 export default withRoleProtection(Staff, [SYSTEM_ROLES.STAFF])
-// export default Staff
