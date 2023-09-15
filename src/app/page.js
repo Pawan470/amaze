@@ -5,9 +5,10 @@ import styles from './page.module.scss'
 
 function Home() {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
+      <h1>Home Page</h1>
       <button className={styles['my-button']}>click 2</button>
-    </main>
+    </div>
   )
 }
 

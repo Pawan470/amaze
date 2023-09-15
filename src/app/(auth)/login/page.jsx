@@ -6,10 +6,10 @@ import Form from 'react-bootstrap/Form'
 import useAuth from './useAuth'
 import Loader from '@/components/shared/Loader'
 import { withRoleProtection } from '@/Hoc/withRoleProtection'
-import { KEYS } from '@/constants'
 
 function Login() {
   const { values, methods, isLoading } = useAuth()
+
   return (
     <Container>
       {isLoading && <Loader />}

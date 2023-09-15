@@ -1,5 +1,4 @@
 import { KEYS } from '@/constants'
-import { ROUTES } from '@/constants/routes'
 import { AUTH_SERVICE } from '@/services'
 import { postRequest } from '@/utils/axiosMethod'
 import { handleError, handleSucess } from '@/utils/utils'
@@ -13,7 +12,6 @@ export default function useAuth() {
   const [formFields, setFormFields] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
-  const router = useRouter()
 
   const onChange = (event) => {
     setFormFields((pre) => ({ ...pre, [event.target.name]: event.target.value }))

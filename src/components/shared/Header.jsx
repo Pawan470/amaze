@@ -20,6 +20,7 @@ const ownerPath = [
   { name: 'Home', path: ROUTES.OFFICES },
   { name: 'Events', path: ROUTES.EVENTS },
   { name: 'Staff', path: ROUTES.STAFF },
+  { name: 'Subscription', path: ROUTES.SUBSCRIPTION },
 ]
 
 const staffPath = [

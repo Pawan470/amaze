@@ -9,4 +9,5 @@ export const ROUTES = {
   OFFICES: '/offices',
   EVENTS: '/events',
   STAFF: '/staff',
+  SUBSCRIPTION: '/subscription',
 }

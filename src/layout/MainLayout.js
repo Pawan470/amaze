@@ -5,8 +5,10 @@ import { Toaster } from 'react-hot-toast'
 import { Fragment } from 'react'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
-import Loader from './Loader'
+import Loader from '../components/shared/Loader'
 import useAuth from '@/hooks/useAuth'
+import usePreviousRoute from '@/hooks/usePreviousRoute'
+import Subcsription from '@/app/(owner)/subscription/page'
 
 const MainLayout = ({ children }) => {
   return (
@@ -22,7 +24,7 @@ const App = ({ children }) => {
   const data = useAuth()
 
   if (data?.isLoading) return <Loader />
-  if (data?.isError) return <p>Some thing went wrong</p>
+  // if (data?.isError) return <p>Some thing went wrong (App_)</p>
 
   return (
     <Fragment>
