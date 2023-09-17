@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '@/actions/counter'
 import postSlice from '@/actions/profile'
-import isAuthChange from '@/actions/isAuthChange'
+import isLoggined from '@/actions/signIn'
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     profile: postSlice,
-    isAuth: isAuthChange,
+    isUserLoggined: isLoggined,
   },
 })

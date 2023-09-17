@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 }
 
-export const getPosts = createAsyncThunk('get/Get_Profile', async () => {
+export const getProfile = createAsyncThunk('get/Get_Profile', async () => {
   try {
     let response = await getRequest(AUTH_SERVICE.GET_PROFILE)
     return response?.data
@@ -31,16 +31,16 @@ export const postSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(getPosts.pending, (state, action) => {
+    builder.addCase(getProfile.pending, (state, action) => {
       state.loading = true
     })
 
-    builder.addCase(getPosts.fulfilled, (state, action) => {
+    builder.addCase(getProfile.fulfilled, (state, action) => {
       state.loading = false
       state.data = action.payload
     })
 
-    builder.addCase(getPosts.rejected, (state, action) => {
+    builder.addCase(getProfile.rejected, (state, action) => {
       state.loading = false
       state.error = action.error
     })

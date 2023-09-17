@@ -22,7 +22,9 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
       if (role && (!allowedRoles?.length || !allowedRoles.includes(role))) {
         return router.replace(rolesHomepage(role))
       }
-      if (!role && allowedRoles?.length) return router.replace(ROUTES.HOME)
+      if (!role && allowedRoles?.length) {
+        return router.replace(ROUTES.HOME)
+      }
       setLoading(false)
     }
 

@@ -2,6 +2,7 @@
 
 import { withRoleProtection } from '@/Hoc/withRoleProtection'
 import styles from './page.module.scss'
+import Loader from '@/components/shared/Loader'
 
 function Home() {
   return (

@@ -8,5 +8,4 @@ function Page() {
   return <div>offices</div>
 }
 
-// export default withRoleProtection(Page, [SYSTEM_ROLES.OWNER])
-export default Page
+export default withRoleProtection(Page, [SYSTEM_ROLES.OWNER])
