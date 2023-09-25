@@ -29,7 +29,7 @@ export const withRoleProtection = (WrappedComponent, allowedRoles = []) => {
     }
 
     if (loading) return <Loader />
-    return <WrappedComponent {...props} router={router} />
+    return <WrappedComponent {...props} />
   }
 
   return ComponentWithProtection

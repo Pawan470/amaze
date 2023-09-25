@@ -2,22 +2,34 @@
 
 import Header from '@/components/shared/Header'
 import { Toaster } from 'react-hot-toast'
-import { Fragment, useEffect } from 'react'
+import { Fragment, Suspense } from 'react'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import Loader from '../components/shared/Loader'
 import useAuth from '@/hooks/useAuth'
-import usePreviousRoute from '@/hooks/usePreviousRoute'
-import Subcsription from '@/app/(owner)/subscription/page'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { usePathname } from 'next/navigation'
+import { AUTH_ROUTES } from '@/constants/routes'
+import { Container } from 'react-bootstrap'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+})
 
 const MainLayout = ({ children }) => {
   const pathName = usePathname()
 
   return (
-    <Provider store={store}>
-      <App>{children}</App>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <App>{children}</App>
+      </Provider>
+    </QueryClientProvider>
   )
 }
 
@@ -27,13 +39,20 @@ const App = ({ children }) => {
   const data = useAuth()
 
   if (data?.isLoading) return <Loader />
+
   // if (data?.isError) return <p>Some thing went wrong (App_)</p>
 
   return (
     <Fragment>
       <Header profile={data?.data} />
-      {children}
+      <Container>
+        <Suspense fallback={<CusLoader />}>{children}</Suspense>
+      </Container>
       <Toaster position="top-center" reverseOrder={false} />
     </Fragment>
   )
+}
+
+const CusLoader = () => {
+  return <p>Loading 123.......</p>
 }

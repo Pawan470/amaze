@@ -10,4 +10,6 @@ export const ROUTES = {
   EVENTS: '/events',
   STAFF: '/staff',
   SUBSCRIPTION: '/subscription',
+  BLOGS: '/blogs',
+  BLOGS_DETAILS: '/blogs/:id',
 }

@@ -7,12 +7,14 @@ import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import Spinner from 'react-bootstrap/Spinner'
 import Error from '@/components/shared/Error/Error'
+import GoogleAutoComplete from '@/components/shared/GoogleAutoComplete'
 
 export const metadata = {
   title: '...kkkkkk',
 }
 
-export default function Page() {
+export default function Page(props) {
+  console.log(props)
   const [searchText, setSearchText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, seterror] = useState(null)
@@ -54,12 +56,11 @@ export default function Page() {
     setIsLoading(false)
   }
 
-  console.log(error)
-
   return (
     <div className="container">
       <h1>Page :- {debouncedValue}</h1>
       <input type="text" value={searchText} onChange={handleSearchText} />
+      <GoogleAutoComplete />
 
       <Tabs
         id="controlled-tab-example"
@@ -74,6 +75,14 @@ export default function Page() {
           {error ? <Error error={error} /> : <UsersListing users={data} isLoading={isLoading} />}
         </Tab>
       </Tabs>
+
+      <PaginationApp
+        currentPage={1}
+        totalPages={10}
+        onPageChange={(e) => {
+          console.log(e)
+        }}
+      />
     </div>
   )
 }
@@ -109,5 +118,75 @@ const UsersListing = ({ users, isLoading }) => {
         </li>
       ))}
     </ul>
+  )
+}
+
+const PaginationApp = ({ currentPage, totalPages, onPageChange }) => {
+  const [page, setPage] = useState(currentPage)
+  const maxButtonsToShow = 5 // Maximum number of page buttons to display
+  const halfMaxButtons = Math.floor(maxButtonsToShow / 2)
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage)
+      onPageChange(newPage)
+    }
+  }
+
+  const renderPageNumbers = () => {
+    const pageNumbers = []
+    let startPage = 1
+    let endPage = totalPages
+
+    if (totalPages > maxButtonsToShow) {
+      if (page <= halfMaxButtons) {
+        endPage = maxButtonsToShow
+      } else if (page >= totalPages - halfMaxButtons) {
+        startPage = totalPages - maxButtonsToShow + 1
+      } else {
+        startPage = page - halfMaxButtons
+        endPage = page + halfMaxButtons
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <li
+          key={i}
+          className={`page-item ${page === i ? 'active' : ''}`}
+          onClick={() => handlePageChange(i)}
+        >
+          <a className="page-link" href="#">
+            {i}
+          </a>
+        </li>,
+      )
+    }
+
+    if (totalPages > maxButtonsToShow) {
+      if (startPage > 1) {
+        pageNumbers.unshift(
+          <li className="page-item disabled" key="start-ellipsis">
+            <span className="page-link">...</span>
+          </li>,
+        )
+      }
+
+      if (endPage < totalPages) {
+        pageNumbers.push(
+          <li className="page-item disabled" key="end-ellipsis">
+            <span className="page-link">...</span>
+          </li>,
+        )
+      }
+    }
+
+    return pageNumbers
+  }
+
+  return (
+    <nav aria-label="Page navigation">
+      <ul className="pagination">{renderPageNumbers()}</ul>
+    </nav>
   )
 }
