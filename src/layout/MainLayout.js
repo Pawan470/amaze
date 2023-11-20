@@ -8,8 +8,6 @@ import { store } from '@/store'
 import Loader from '../components/shared/Loader'
 import useAuth from '@/hooks/useAuth'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { usePathname } from 'next/navigation'
-import { AUTH_ROUTES } from '@/constants/routes'
 import { Container } from 'react-bootstrap'
 
 const queryClient = new QueryClient({
@@ -22,8 +20,6 @@ const queryClient = new QueryClient({
 })
 
 const MainLayout = ({ children }) => {
-  const pathName = usePathname()
-
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>

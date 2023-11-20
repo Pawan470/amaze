@@ -28,7 +28,7 @@ export default function useAuth() {
         return
       }
 
-      if (!token && isUserLoggined.token) {
+      if (!token && isUserLoggined.token && !isUserLoggined.error) {
         token = isUserLoggined.token
         localStorage.setItem(KEYS.TOKEN, token)
         Cookies.set(KEYS.TOKEN, token, { expires: 1 })

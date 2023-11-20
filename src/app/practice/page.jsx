@@ -1,192 +1,79 @@
 'use client'
-import { useDebounce } from '@/hooks/useDebounce'
-import { getRequest } from '@/utils/axiosMethod'
-import { handleError } from '@/utils/utils'
 import React, { useState, useEffect } from 'react'
-import Tab from 'react-bootstrap/Tab'
-import Tabs from 'react-bootstrap/Tabs'
-import Spinner from 'react-bootstrap/Spinner'
-import Error from '@/components/shared/Error/Error'
-import GoogleAutoComplete from '@/components/shared/GoogleAutoComplete'
+import DarkTheme from './_components/DarkTheme'
+import SubmitBtn from '@/components/shared/SubmitBtn'
+import Input from '@/components/Forms/Input'
+import Select from '@/components/Forms/Select'
 
-export const metadata = {
-  title: '...kkkkkk',
-}
+export default function Practice() {
+  const [form, setForm] = useState({
+    first: 'one',
+    middle: '2',
+    last: '3',
+  })
+  const [form1, set1Form] = useState('okoko')
+  const [form2, set2Form] = useState('okoko')
+  const [form3, set3Form] = useState('okoko')
+  const [form4, set4Form] = useState(false)
 
-export default function Page(props) {
-  console.log(props)
-  const [searchText, setSearchText] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, seterror] = useState(null)
-
-  const debouncedValue = useDebounce(searchText)
-  const [key, setKey] = useState('Products')
-  const [data, setData] = useState([])
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setForm((pre) => ({ ...pre, [name]: value }))
+  }
 
   useEffect(() => {
-    setData([])
-    if (key === 'Products') getProducts()
-    if (key === 'users') getUsers()
-  }, [key])
-
-  const handleSearchText = (event) => {
-    setSearchText(event.target.value)
-  }
-
-  const getProducts = async () => {
-    try {
-      setIsLoading(true)
-      let response = await getRequest('https://dummyjson.com/products')
-      setData(response.products)
-    } catch (error) {
-      handleError(error)
+    let interval
+    if (form4) {
+      interval = setTimeout(() => {
+        set4Form(false)
+      }, 2000)
     }
-    setIsLoading(false)
-  }
 
-  const getUsers = async () => {
-    try {
-      setIsLoading(true)
-      let response = await getRequest('https://dummyjson.com/users')
-      setData(response.users)
-    } catch (error) {
-      handleError(error)
-      seterror(error)
+    return () => {
+      clearInterval(interval)
     }
-    setIsLoading(false)
+  }, [form4])
+
+  console.log('renderred')
+  const reset = () => {
+    setForm({
+      first: '',
+      middle: '',
+      last: '',
+    })
+    set4Form(true)
+  }
+  const register = (name) => {
+    return {
+      name,
+      value: form[name],
+      className: 'form-control mt-2',
+      onChange: handleChange,
+    }
   }
 
   return (
-    <div className="container">
-      <h1>Page :- {debouncedValue}</h1>
-      <input type="text" value={searchText} onChange={handleSearchText} />
-      <GoogleAutoComplete />
+    <div>
+      {/* <DarkTheme /> */}
+      <button className=" custom_btn">Hi</button>
+      <div className="nested_css">
+        <ul>
+          <li>HI</li>
+          <li>HI</li>
+          <li>HI</li>
+          <li>HI</li>
+        </ul>
+      </div>
 
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3 mt-3"
-      >
-        <Tab eventKey="Products" title="Products">
-          <ProductListing products={data} isLoading={isLoading} />
-        </Tab>
-        <Tab eventKey="users" title="Users">
-          {error ? <Error error={error} /> : <UsersListing users={data} isLoading={isLoading} />}
-        </Tab>
-      </Tabs>
-
-      <PaginationApp
-        currentPage={1}
-        totalPages={10}
-        onPageChange={(e) => {
-          console.log(e)
-        }}
-      />
+      <div>
+        <input {...register('first')} disabled />
+        <input {...register('middle')} disabled />
+        <Input {...register('last')} placeholder="Pawan bhatt" />
+        <Select></Select>
+        <SubmitBtn isLoading={form4} handleSubmit={reset}>
+          ok
+        </SubmitBtn>
+      </div>
     </div>
-  )
-}
-
-const LoaderCustom = () => {
-  return (
-    <div className="text-center">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    </div>
-  )
-}
-
-const ProductListing = ({ products, isLoading }) => {
-  if (isLoading) return <LoaderCustom />
-  return (
-    <ul>
-      {products.map((item) => (
-        <li key={item.id}>{item.title}</li>
-      ))}
-    </ul>
-  )
-}
-
-const UsersListing = ({ users, isLoading }) => {
-  if (isLoading) return <LoaderCustom />
-  return (
-    <ul>
-      {users.map((item) => (
-        <li key={item.id}>
-          {item.firstName} - {item.lastName}
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-const PaginationApp = ({ currentPage, totalPages, onPageChange }) => {
-  const [page, setPage] = useState(currentPage)
-  const maxButtonsToShow = 5 // Maximum number of page buttons to display
-  const halfMaxButtons = Math.floor(maxButtonsToShow / 2)
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage)
-      onPageChange(newPage)
-    }
-  }
-
-  const renderPageNumbers = () => {
-    const pageNumbers = []
-    let startPage = 1
-    let endPage = totalPages
-
-    if (totalPages > maxButtonsToShow) {
-      if (page <= halfMaxButtons) {
-        endPage = maxButtonsToShow
-      } else if (page >= totalPages - halfMaxButtons) {
-        startPage = totalPages - maxButtonsToShow + 1
-      } else {
-        startPage = page - halfMaxButtons
-        endPage = page + halfMaxButtons
-      }
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(
-        <li
-          key={i}
-          className={`page-item ${page === i ? 'active' : ''}`}
-          onClick={() => handlePageChange(i)}
-        >
-          <a className="page-link" href="#">
-            {i}
-          </a>
-        </li>,
-      )
-    }
-
-    if (totalPages > maxButtonsToShow) {
-      if (startPage > 1) {
-        pageNumbers.unshift(
-          <li className="page-item disabled" key="start-ellipsis">
-            <span className="page-link">...</span>
-          </li>,
-        )
-      }
-
-      if (endPage < totalPages) {
-        pageNumbers.push(
-          <li className="page-item disabled" key="end-ellipsis">
-            <span className="page-link">...</span>
-          </li>,
-        )
-      }
-    }
-
-    return pageNumbers
-  }
-
-  return (
-    <nav aria-label="Page navigation">
-      <ul className="pagination">{renderPageNumbers()}</ul>
-    </nav>
   )
 }

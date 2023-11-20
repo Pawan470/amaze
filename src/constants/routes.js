@@ -11,5 +11,7 @@ export const ROUTES = {
   STAFF: '/staff',
   SUBSCRIPTION: '/subscription',
   BLOGS: '/blogs',
+  MAP: '/map',
+
   BLOGS_DETAILS: '/blogs/:id',
 }

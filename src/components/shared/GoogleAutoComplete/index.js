@@ -1,3 +1,4 @@
+'use client'
 import React, { useCallback, useState } from 'react'
 import { debounce, handleError } from '@/utils/utils'
 import ListGroup from 'react-bootstrap/ListGroup'

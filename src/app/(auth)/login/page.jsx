@@ -6,16 +6,13 @@ import Form from 'react-bootstrap/Form'
 import useAuth from '../_Hooks/useAuth'
 import Loader from '@/components/shared/Loader'
 import { withRoleProtection } from '@/Hoc/withRoleProtection'
-import useToSignOut from '@/hooks/useToSignOut'
+import SubmitBtn from '@/components/shared/SubmitBtn'
 
 function Login() {
-  const { values, methods, isLoading } = useAuth()
-  const { signOut } = useToSignOut()
+  const { values, methods, isLoading, error } = useAuth()
 
-  if (isLoading) return <Loader />
   return (
     <Container>
-      <button onClick={signOut}>logout</button>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -27,6 +24,7 @@ function Login() {
             placeholder="Enter email"
           />
         </Form.Group>
+        {error.email && <span className="text-danger">{error.email}</span>}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -38,9 +36,10 @@ function Login() {
             onChange={methods.onChange}
           />
         </Form.Group>
-        <Button variant="primary" type="button" onClick={methods.handleSubmit}>
+        {error.password && <div className="text-danger">{error.password}</div>}
+        <SubmitBtn isLoading={isLoading} handleSubmit={methods.handleSubmit}>
           Submit
-        </Button>
+        </SubmitBtn>
       </Form>
     </Container>
   )

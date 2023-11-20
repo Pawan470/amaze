@@ -20,7 +20,13 @@ export const isLoggined = createAsyncThunk(AUTH_SERVICE.LOGIN, async (params) =>
 export const loginUser = createSlice({
   name: 'SING_IN',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSignIn: (state) => {
+      state.isLoading = false
+      state.token = null
+      state.error = null
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(isLoggined.pending, (state, action) => {
       state.isLoading = true

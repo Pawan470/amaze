@@ -26,7 +26,6 @@ export default function Blogs({ searchParams }) {
         value={data.searchText}
         onChange={(e) => methods.setSearchText(e.target.value)}
       />
-      <GoogleAutoComplete />
 
       {blogs.length > 0 ? (
         blogs?.map((item) => (

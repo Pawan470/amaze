@@ -16,7 +16,7 @@ export default function useToSignOut() {
     sessionStorage.clear()
     localStorage.clear()
     Cookies.remove(KEYS.TOKEN)
-    router.push(AUTH_ROUTES.LOGIN)
+    window.location.reload()
   }
   return { signOut }
 }

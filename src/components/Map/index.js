@@ -1,8 +1,9 @@
+'use client'
 import React, { useRef, useEffect, useState } from 'react'
 import { GoogleApiWrapper } from 'google-maps-react'
 import { config } from '@/config/config'
 
-function Map({ google }) {
+function Map() {
   const ref = useRef()
   const [Map, setMap] = useState(null)
   const [Markers, setMarker] = useState([])
